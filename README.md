@@ -60,6 +60,8 @@ Liberated-Mapuan
 - http-errors: 1.6.3
 - mongoose: 8.0.0
 
+## Database Collection Schema
+=======
 ```powershell
 # Test login feature
 Invoke-RestMethod -Uri http://localhost:3000/mapuan/login -Method Post -Headers @{"Content-Type"="application/json"} -Body '{"identifier":"aidre@mmcm.com","password":"12345"}'
@@ -93,6 +95,47 @@ Invoke-RestMethod -Uri http://localhost:3000/mapuan/logout -Method Post -Headers
     - Type: `Array of Strings`
     - Description: An array to store multiple authentication tokens for the user.
 
+### Fields
 
+- **`username`**
+  - Type: `String`
+  - Required: Yes
+  - Unique: Yes
+  - Description: The username of the mapuan.
+
+- **`email`**
+  - Type: `String`
+  - Required: Yes
+  - Unique: Yes
+  - Description: The email address of the mapuan.
+
+- **`password`**
+  - Type: `String`
+  - Required: Yes
+  - Description: The hashed password of the mapuan.
+
+- **`isAdmin`**
+  - Type: `Boolean`
+  - Default: `false`
+  - Description: Indicates whether the mapuan has administrator privileges (for admins).
+
+- **`tokens`**
+  - Type: `Array of Strings`
+  - Description: An array to store multiple authentication tokens for the mapuan.
+
+### Implementation of the Model
+
+```javascript
+const mongoose = require("mongoose");
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  isAdmin: { type: Boolean, default: false },
+  tokens: [{ type: String }],
+});
+const User = mongoose.model("User", userSchema);
+module.exports = User;
+```
 
 _Documentation and README.md is still in writing. It will be updated overtime per reiteration of SDLC._
