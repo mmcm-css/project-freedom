@@ -25,17 +25,41 @@ const mapuanController = {
 
       // Check user exists and the password is correct
       if (user && (await bcrypt.compare(password, user.password))) {
-        res.status(200).json({ message: "Login Successful. Welcome Mapuan!" });
-      } else {
+        // Generate a new token and store it
+        const token = user.generateAuthToken();
+        await user.save();
+
         res
-          .status(401)
-          .json({
-            error:
-              "Oh no. You have entered an invalid credentials. Try again (or not if you are an outsider).",
-          });
+          .status(200)
+          .json({ message: "Login Successful. Welcome Mapuan!", token });
+      } else {
+        res.status(401).json({
+          error: "Invalid credentials. Please try again.",
+        });
       }
     } catch (error) {
       console.error("Error in user login:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+  logout: async (req, res) => {
+    // It's not FUCKING WORKING. req is fucking undefined.
+    console.log("Tokens array:", req.user);
+    console.log("Received token:", req.token);
+    try {
+      if (!req.user || !req.token) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      // Removal of the current token from the tokens array
+      req.user.tokens = req.user.tokens.filter((token) => token !== req.token);
+
+      // Save the user with the updated tokens array
+      await req.user.save();
+
+      res.status(200).json({ message: "Goodbye, Mapuan!" });
+    } catch (error) {
+      console.error("Error in user logout:", error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
