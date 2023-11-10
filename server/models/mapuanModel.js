@@ -19,6 +19,11 @@ userSchema.pre("save", async function (next) {
   }
 });
 
+// Verifying the password
+userSchema.methods.verifyPassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
+
 const mapuanModel = mongoose.model("mapuan", userSchema);
 
 module.exports = mapuanModel;
