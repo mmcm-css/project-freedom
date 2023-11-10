@@ -44,6 +44,7 @@ const mapuanController = {
   },
   logout: async (req, res) => {
     // It's not FUCKING WORKING. req is fucking undefined.
+    // TODO: jsonwebtoken is not working properly. im dumb as fuck.
     console.log("Tokens array:", req.user);
     console.log("Received token:", req.token);
     try {
