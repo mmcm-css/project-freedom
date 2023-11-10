@@ -16,18 +16,23 @@ const mapuanController = {
   },
   login: async (req, res) => {
     try {
-      const { email, password } = req.body;
+      const { identifier, password } = req.body;
 
-      // Find the user by email
-      const user = await User.findOne({ email });
+      // Find the user by email or username
+      const user = await User.findOne({
+        $or: [{ email: identifier }, { username: identifier }],
+      });
 
       // Check user exists and the password is correct
       if (user && (await bcrypt.compare(password, user.password))) {
-        res.status(200).json({ message: "Welcome, Mapuan! Login successful!" });
+        res.status(200).json({ message: "Login Successful. Welcome Mapuan!" });
       } else {
         res
           .status(401)
-          .json({ error: "Oh no, Mapuan. Invalid email or password" });
+          .json({
+            error:
+              "Oh no. You have entered an invalid credentials. Try again (or not if you are an outsider).",
+          });
       }
     } catch (error) {
       console.error("Error in user login:", error);
