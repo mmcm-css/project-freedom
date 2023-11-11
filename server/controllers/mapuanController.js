@@ -48,13 +48,13 @@ const mapuanController = {
         return res.status(401).json({ error: "Unauthorized" });
       }
 
-      // Find the user by their id
       const user = await User.findById(req.user.userId);
 
-      // Remove the token from the tokens array
+      // Making sure the user doesn't really spam the logout button
+      if (!user.tokens.includes(req.token)) {
+        return res.status(401).json({ error: "Invalid token" });
+      }
       user.tokens = user.tokens.filter((token) => token !== req.token);
-
-      // Save the user with the updated tokens array
       await user.save();
 
       res.status(200).json({ message: "Goodbye, Mapuan!" });
