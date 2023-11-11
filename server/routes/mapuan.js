@@ -1,5 +1,5 @@
 const express = require("express");
-const { expressjwt: jwt } = require("express-jwt");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 const mapuanAccountController = require("../controllers/mapuanController");
 
@@ -11,12 +11,23 @@ const SECRET_KEY =
   "Th!Si$aS3cR3Tk3y!BycSsMmCmLibeRateDdEvs.HEHEHE2023JusticeForAaronSwartz!WHATTHEFUCK";
 
 // Authentication Middleware
-const authenticate = jwt({
-  secret: SECRET_KEY,
-  algorithms: ["HS256"],
-});
+const authenticate = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader) {
+    const token = authHeader.split(" ")[1];
+    jwt.verify(token, SECRET_KEY, (err, user) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+      req.user = user;
+      req.token = token;
+      next();
+    });
+  } else {
+    res.sendStatus(401);
+  }
+};
 
-// Logout Route
 router.post("/logout", authenticate, mapuanAccountController.logout);
 
 // Protected Route (When the user is authenticated, this is accessible)
