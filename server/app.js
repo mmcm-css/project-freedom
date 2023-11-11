@@ -4,6 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+const cors = require("cors");
 
 const mongoURI =
   "mongodb+srv://lmmcm:LiberatedMapua2023CSS@main.jmpiitm.mongodb.net/liberate";
@@ -23,6 +24,7 @@ var indexRouter = require("./routes/index");
 var mapuanRouter = require("./routes/mapuan");
 
 var app = express();
+app.use(cors());
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
