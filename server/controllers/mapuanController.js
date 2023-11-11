@@ -43,20 +43,19 @@ const mapuanController = {
     }
   },
   logout: async (req, res) => {
-    // It's not FUCKING WORKING. req is fucking undefined.
-    // TODO: jsonwebtoken is not working properly. im dumb as fuck.
-    console.log("Tokens array:", req.user);
-    console.log("Received token:", req.token);
     try {
       if (!req.user || !req.token) {
         return res.status(401).json({ error: "Unauthorized" });
       }
 
-      // Removal of the current token from the tokens array
-      req.user.tokens = req.user.tokens.filter((token) => token !== req.token);
+      const user = await User.findById(req.user.userId);
 
-      // Save the user with the updated tokens array
-      await req.user.save();
+      // Making sure the user doesn't really spam the logout button
+      if (!user.tokens.includes(req.token)) {
+        return res.status(401).json({ error: "Invalid token" });
+      }
+      user.tokens = user.tokens.filter((token) => token !== req.token);
+      await user.save();
 
       res.status(200).json({ message: "Goodbye, Mapuan!" });
     } catch (error) {
