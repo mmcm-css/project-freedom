@@ -19,6 +19,11 @@ Liberated Mapuan is a unique online platform tailored for the Mapúa Malayan Col
 ## Purpose
 Liberated Mapuan aims to break down barriers, providing a digital space where Mapúa Malayan Colleges Mindanao students can express themselves freely. Embracing anonymity, the platform encourages genuine connections, open discussions, and contributes to a vibrant online community. The idea behind this is driven by the pervasive use of anonymous freedom wall (e.g., NGL.link, MMCM Confessions, etc) from various school wherein students use it as a way to communicate with their community without sacrificing their identity. This project will adopt a MERN stack, a web development framework made up of the stack of MongoDB, Express.js, React.js, and Nodejs [1](https://www.mongodb.com/languages/mern-stack-tutorial).
 
+## Technical Stack
+
+![Technical Stack](https://github.com/mmcm-css/project-freedom/assets/61798731/9e8d0787-0cab-4dd2-87d3-00c81ff829b6)
+
+
 # Project Structure
 
 ```powershell
