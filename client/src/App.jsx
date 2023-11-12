@@ -6,12 +6,15 @@ import { Link } from "react-router-dom";
 
 function App() {
   return (
-    <div className="flex flex-col h-screen justify-center items-center gap-4">
-      <img src={mmcm} alt="Liberated Mapuan" className="h-64 invert" />
+    // Temporary bg color
+    <div className="flex flex-col items-center justify-center h-screen gap-4 bg-neutral-focus"> 
+      <img src={mmcm} alt="Project Freedom" className="h-64" />
       <div className="mt-8 space-x-4 ">
-        <button className="btn text-white bg-primary">Login</button>
-        <Link to="/register" className="btn text-white bg-secondary">
-          Register
+        <Link to="/login">
+          <button className="text-white btn bg-primary">Login</button>
+        </Link>
+        <Link to="/register">
+          <button className="text-white btn bg-secondary">Register</button>
         </Link>
       </div>
     </div>
